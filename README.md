@@ -1,21 +1,23 @@
-# Build Your Own
+# Own Work
 
-**The build half of the Absorb Anything suite: tasks, roadmaps, specs, and systems on a plain-files workspace.**
+**Tasks, roadmaps, and specs that survive the session.**
 
-`byo` manages what you build after studying the prior art — the bounded tasks, intended outcomes, normative specs, and system registrations of your own project. It operates on the same on-disk workspace format as [Absorb Anything](../absorb-anything), so evidence and execution live side by side without either tool requiring the other.
+Own Work is a local-first CLI for tracking what you build. It exists because the chat scrollback has quietly become a system of record: the task list lives in a conversation, the acceptance criteria live in a prompt, and both evaporate at the next session. Own Work keeps them where they belong — plain files with stable identity, owned by your repo.
 
 ```bash
-byo task create --title "Port the scheduler"     # one durable outcome, one Task
-byo roadmap create "Pulse-level control"          # an intended outcome, not a work plan
-byo spec promote --from-task task-0004-...        # keep the contract after the work is gone
-byo system register ./packages/engine --primary   # what you are actually building
+ownwork task create --title "Port the scheduler"      # one durable outcome, one Task
+ownwork roadmap create "Pulse-level control"          # an intended outcome, not a work plan
+ownwork spec promote --from-task task-0004-...        # keep the contract after the work is gone
+ownwork system register ./packages/engine --primary   # what you are actually building
 ```
 
-> Status: being extracted from [Assay v0.14.0](https://github.com/X-T-E-R/assay); not on npm yet. These objects exist in Assay today under the same names.
+> Status: pre-release, not on npm yet. The commands above are the committed surface for the first release, not a mockup.
 
 What makes these four objects worth a CLI instead of a TODO file: every record has a stable id that survives sessions, agents, and context compaction; lifecycle never propagates by accident (finishing a task accepts nothing, linking transfers no authority); and the storage is human-readable files a git repo can own.
 
-Works alone for projects that only need execution tracking. Works beside `absorb` when decisions should trace back to evidence. [Assay](https://github.com/X-T-E-R/assay) remains the integrated workbench and will become the layer that ties the two halves together — adoption records that map studied sources into built systems.
+## Part of a pair
+
+Own Work is the build half of a two-tool suite: [`absorb-anything`](../absorb-anything) turns the code you study into durable, reusable evidence, on the same on-disk workspace format. Works alone for projects that only need execution tracking; works beside `absorb` when decisions should trace back to evidence.
 
 **Absorb Anything. Build Your Own.**
 
