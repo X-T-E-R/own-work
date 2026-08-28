@@ -1,0 +1,27 @@
+{
+  "name": "own-work",
+  "version": "0.1.0",
+  "description": "Task, Roadmap, Spec, and System registry workflows for your own work.",
+  "license": "MIT",
+  "type": "module",
+  "engines": { "node": ">=22.13.0" },
+  "bin": { "ownwork": "./dist/cli.js" },
+  "exports": { ".": "./dist/index.js" },
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "test": "vitest run --config vitest.config.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@commander-js/extra-typings": "^12.1.0",
+    "absorb-anything-core": "file:../../../absorb-anything/packages/absorb-anything-core",
+    "commander": "^12.1.0",
+    "yaml": "^2.6.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "execa": "^9.5.0"
+  }
+}

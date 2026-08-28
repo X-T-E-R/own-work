@@ -1,0 +1,10 @@
+packages:
+  - "packages/*"
+
+allowBuilds:
+  '@biomejs/biome': true
+  esbuild: true
+
+onlyBuiltDependencies:
+  - "@biomejs/biome"
+  - "esbuild"

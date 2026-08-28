@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own-work
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/absorb-anything
+          path: absorb-anything
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/assay
+          ref: v0.14.0
+          path: assay
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: own-work/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: absorb-anything
+      - run: pnpm build
+        working-directory: absorb-anything
+      - run: pnpm install --frozen-lockfile
+        working-directory: assay
+      - run: pnpm build
+        working-directory: assay
+      - run: pnpm install --frozen-lockfile
+        working-directory: own-work
+      - if: runner.os == 'Linux'
+        run: bash scripts/check.sh
+        working-directory: own-work
+        env:
+          ASSAY_V014_CLI: ${{ github.workspace }}/assay/packages/assay-cli/dist/cli.js
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./scripts/check.ps1
+        working-directory: own-work
+        env:
+          ASSAY_V014_CLI: ${{ github.workspace }}/assay/packages/assay-cli/dist/cli.js
