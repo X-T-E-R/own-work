@@ -17,6 +17,11 @@ export default defineConfig({
         `ownwork-tests-${process.pid}`,
         "clone-registry.json",
       ),
+      // Byte-exact assertions against Git checkouts need the line endings that
+      // were written; Windows CI turns on core.autocrlf globally.
+      GIT_CONFIG_COUNT: "1",
+      GIT_CONFIG_KEY_0: "core.autocrlf",
+      GIT_CONFIG_VALUE_0: "false",
     },
   },
 });
