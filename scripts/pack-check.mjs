@@ -24,6 +24,7 @@ try {
   const files = stdout.trim().split(/\r?\n/).sort();
   for (const required of [
     "package/LICENSE",
+    "package/README.md",
     "package/package.json",
     "package/dist/cli.js",
     "package/dist/index.js",
@@ -33,7 +34,7 @@ try {
   const unexpected = files.filter(
     (file) =>
       !file.startsWith("package/dist/") &&
-      !["package/LICENSE", "package/package.json"].includes(file),
+      !["package/LICENSE", "package/README.md", "package/package.json"].includes(file),
   );
   if (unexpected.length > 0) throw new Error(`unexpected package files: ${unexpected.join(", ")}`);
   console.log(`pack check passed (${files.length} files)`);
