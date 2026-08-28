@@ -426,8 +426,8 @@ describe("native Task relations, archive, and pagination", () => {
     ).rejects.toMatchObject({ code: "TASK_RELATION_INVALID" });
   });
 
-  // 12 lock-contention rounds run ~25s unloaded on Windows; the default 30s times out under parallel CI load.
-  it("serializes concurrent relation writes so a cycle cannot pass two stale reads", { timeout: 120_000 }, async () => {
+  // 12 lock-contention rounds run ~25s unloaded on Windows; 30s times out under parallel CI load.
+  it("serializes concurrent relation writes so a cycle cannot pass two stale reads", async () => {
     const root = await workspace("ConcurrentRelations");
     for (let round = 0; round < 12; round += 1) {
       const left = await createTask({ root, title: `Left ${round}` });
@@ -448,7 +448,7 @@ describe("native Task relations, archive, and pagination", () => {
       const rejected = writes.find((entry) => entry.status === "rejected") as PromiseRejectedResult;
       expect(rejected.reason).toMatchObject({ code: "TASK_RELATION_CYCLE" });
     }
-  }, 30_000);
+  }, 120_000);
 
   it("archives terminal tasks independently and lists bounded pages", async () => {
     const root = await workspace("Archive");
