@@ -82,14 +82,21 @@ describe("hosted CI contract", () => {
     }
   });
 
-  it("keeps the package dependency aligned with the sibling checkout", async () => {
+  it("keeps the manifest publishable while local dev resolves the sibling checkout", async () => {
     const manifest = JSON.parse(
       await readFile(path.resolve(process.cwd(), "package.json"), "utf8"),
     ) as {
       dependencies: Record<string, string>;
     };
-    expect(manifest.dependencies["absorb-anything-core"]).toBe(
-      "file:../../../absorb-anything/packages/absorb-anything-core",
+    // The published manifest must carry a real version range; a file: path would
+    // ship a package nobody can install.
+    expect(manifest.dependencies["absorb-anything-core"]).toBe("^0.1.0");
+
+    const workspace = parse(
+      await readFile(path.resolve(process.cwd(), "../../pnpm-workspace.yaml"), "utf8"),
+    ) as { overrides?: Record<string, string> };
+    expect(workspace.overrides?.["absorb-anything-core"]).toBe(
+      "file:../absorb-anything/packages/absorb-anything-core",
     );
   });
 });

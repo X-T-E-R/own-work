@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  absorb-anything-core: file:../absorb-anything/packages/absorb-anything-core
+
 importers:
 
   .:

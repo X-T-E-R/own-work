@@ -1,6 +1,11 @@
 packages:
   - "packages/*"
 
+# Local dev resolves the unpublished core from the sibling repo; the published
+# manifest keeps the ^0.1.0 range (overrides never enter the tarball).
+overrides:
+  absorb-anything-core: "file:../absorb-anything/packages/absorb-anything-core"
+
 allowBuilds:
   '@biomejs/biome': true
   esbuild: true
