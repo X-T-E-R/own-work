@@ -426,7 +426,8 @@ describe("native Task relations, archive, and pagination", () => {
     ).rejects.toMatchObject({ code: "TASK_RELATION_INVALID" });
   });
 
-  it("serializes concurrent relation writes so a cycle cannot pass two stale reads", async () => {
+  // 12 lock-contention rounds run ~25s unloaded on Windows; the default 30s times out under parallel CI load.
+  it("serializes concurrent relation writes so a cycle cannot pass two stale reads", { timeout: 120_000 }, async () => {
     const root = await workspace("ConcurrentRelations");
     for (let round = 0; round < 12; round += 1) {
       const left = await createTask({ root, title: `Left ${round}` });
